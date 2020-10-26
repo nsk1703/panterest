@@ -5,8 +5,6 @@ namespace App\Entity;
 use App\Entity\Traits\Timestampable;
 use App\Repository\PinRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Monolog\DateTimeImmutable;
-use phpDocumentor\Reflection\Types\Null_;
 
 /**
  * @ORM\Entity(repositoryClass=PinRepository::class)
@@ -16,7 +14,6 @@ use phpDocumentor\Reflection\Types\Null_;
 class Pin
 {
     use Timestampable;
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -62,5 +59,4 @@ class Pin
 
         return $this;
     }
-
 }

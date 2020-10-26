@@ -3,6 +3,9 @@
 
 namespace App\Entity\Traits;
 
+/*
+ * Permet de creer des proprietes globales pour plusieurs entites
+ */
 
 trait Timestampable
 {

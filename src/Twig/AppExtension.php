@@ -6,6 +6,9 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
+/*
+ * Permet de pluraliser un mot selon l'etat du compteur.
+ */
 class AppExtension extends AbstractExtension
 {
     public function getFilters(): array
