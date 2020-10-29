@@ -103,7 +103,7 @@ class PinsController extends AbstractController
         {
             $entityManager->remove($pin);
             $entityManager->flush();
-        }
+        } 
         return $this->redirectToRoute('app_home');
     }
 }
