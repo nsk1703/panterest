@@ -66,7 +66,7 @@ class PinsController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      * @throws LogicException
-     * @Route("/pins/{id<[0-9]+>}/edit", name="app_pins_edit", methods={"GET", "PUT"})
+     * @Route("/pins/{id<[0-9]+>}", name="app_pins_edit", methods={"GET", "PUT"})
      */
     public function edit(Request $request, Pin $pin, EntityManagerInterface $entityManager): Response
     {
@@ -95,11 +95,11 @@ class PinsController extends AbstractController
      * @param Pin $pin
      * @param EntityManagerInterface $entityManager
      * @return Response
-     * @Route("/pins/{id<[0-9]+>}/delete", name="app_pins_delete", methods={"DELETE"})
+     * @Route("/pins/{id<[0-9]+>}", name="app_pins_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Pin $pin, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('pin_deletion'.$pin->getId(), $request->request->get('csrf_token')))
+        if ($this->isCsrfTokenValid('pin_deletion_'.$pin->getId(), $request->request->get('csrf_token')))
         {
             $entityManager->remove($pin);
             $entityManager->flush();
