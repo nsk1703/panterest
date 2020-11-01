@@ -8,7 +8,9 @@
     {% for pin in pins %}
         <article>
             <h2><a href="{{ path('app_pins_show', {id: pin.id}) }}">{{ pin.title }}</a></h2>
-            <p>{{ pin.description }}</p>
+{#  Troncature de textes, en ajoutant ... en fin de la troncature et terminant le mot de fin, meme si c'est plus de 10 caracteres#}
+            <p>{{ pin.description|u.truncate(10, '...', false) }}</p>
+            <p>Submitted {{ pin.createdAt|date }}</p>
         </article>
     {% endfor %}
 {% endblock %}
