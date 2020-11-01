@@ -26,7 +26,7 @@ class PinsController extends AbstractController
     }
 
     /**
-     * @Route("/pin/create", name="app_pins_create", methods={"GET", "POST"}")
+     * @Route("/pin/create", name="app_pins_create", methods={"GET", "POST"})
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @return Response
@@ -45,6 +45,7 @@ class PinsController extends AbstractController
             $entityManager->persist($pin);
             $entityManager->flush();
 
+            $this->addFlash('success','Pin successfully created!!');
             return $this->redirectToRoute('app_home');
         }
         return $this->render('pins/create.html.twig', ['form' => $form->createView()]);
@@ -66,7 +67,7 @@ class PinsController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      * @throws LogicException
-     * @Route("/pins/{id<[0-9]+>}", name="app_pins_edit", methods={"GET", "PUT"})
+     * @Route("/pins/{id<[0-9]+>}/edit", name="app_pins_edit", methods={"GET", "PUT"})
      */
     public function edit(Request $request, Pin $pin, EntityManagerInterface $entityManager): Response
     {
@@ -82,8 +83,11 @@ class PinsController extends AbstractController
         {
             $entityManager->flush();
 
+            $this->addFlash('success', 'Pin successfully updated!!');
+
             return $this->redirectToRoute('app_home');
         }
+
         return $this->render("pins/edit.html.twig", [
             'pin' => $pin,
             'form' => $form->createView()
@@ -103,7 +107,10 @@ class PinsController extends AbstractController
         {
             $entityManager->remove($pin);
             $entityManager->flush();
-        } 
+
+            $this->addFlash('info', 'Pin successfully deleted!!');
+        }
+
         return $this->redirectToRoute('app_home');
     }
 }
