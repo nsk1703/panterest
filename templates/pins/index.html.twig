@@ -3,14 +3,33 @@
 {% block title 'Find the best pins on earth!'%}
 
 {% block body %}
-    <h1>{{ pluralize(pins|length, 'Pin') }}</h1>
+    {% if (pins|length > 0) %}
+        <h1 class="mb-4 text-center text-muted">{{ pluralize(pins|length, 'Pin') }}</h1>
 
-    {% for pin in pins %}
-        <article>
-            <h2><a href="{{ path('app_pins_show', {id: pin.id}) }}">{{ pin.title }}</a></h2>
-{#  Troncature de textes, en ajoutant ... en fin de la troncature et terminant le mot de fin, meme si c'est plus de 10 caracteres #}
-            <p>{{ pin.description|u.truncate(10, '...', false) }}</p>
-            <p>Submitted {{ pin.createdAt|ago }}</p>
-        </article>
-    {% endfor %}
+{#       Regroupement des pins en lot de 3 pour chaque ligne
+        Pour chaque pin au niveau du lot de 3(row)#}
+        {% for row in pins|batch(3) %}
+            <div class="row mb-4">
+                {% for pin in row %}
+                    <div  class="col-md-4">
+                        <article class="pin bg-white rounded shadow">
+                            <div class="mw-100 overflow-hidden">
+                                <a href="{{ path('app_pins_show', {id: pin.id}) }}">
+                                    {#      Attribution d'une image par defaut en cas d'un manque d'image lors d'un ajout de pin          #}
+                                    <img src="{{ pin.imageName ? vich_uploader_asset(pin) : asset('build/images/placeholder.jpg')
+                                    |imagine_filter('squared_thumbnail_medium') }}" alt="{{pin.title}}" class="w-100 rounded-top">
+                                </a>
+                            </div>
+                            <h2 class="h5 pl-3 pt-3"><a href="{{ path('app_pins_show', {id: pin.id}) }}"
+                                                class="text-secondary text-decoration-none">{{ pin.title }}</a></h2>
+                            {#  Troncature de textes, en ajoutant ... en fin de la troncature et terminant le mot de fin, meme si c'est plus de 10 caracteres #}
+                            <p class="text-muted pl-3 pb-3"><small>Submitted [[ OWNER FULL NAME ]]</small></p>
+                        </article>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="mt-5 h1 text-center">No pins yet. <a href="{{ path('app_pins_create') }}">Be the first!</a></p>
+    {% endif %}
 {% endblock %}
