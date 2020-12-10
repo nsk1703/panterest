@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Pin;
 use App\Form\PinType;
 use App\Repository\PinRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Exception\LogicException;
@@ -29,19 +30,21 @@ class PinsController extends AbstractController
      * @Route("/pin/create", name="app_pins_create", methods={"GET", "POST"})
      * @param Request $request
      * @param EntityManagerInterface $entityManager
+     * @param UserRepository $userRepository
      * @return Response
-     * @throws LogicException
      */
-    public function create(Request $request, EntityManagerInterface $entityManager): Response
+    public function create(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $pin = new Pin();
         $form = $this->createForm(PinType::class, $pin);
-
 //        Verification des donnees du formulaire
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
+            $janeDoe = $userRepository->findOneBy(['email' => 'janedoe@example.com']);
+            $pin->setUser($janeDoe);
+
             $entityManager->persist($pin);
             $entityManager->flush();
 
